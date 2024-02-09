@@ -1,0 +1,28 @@
+POST http://localhost:3000/device-readings
+content-type: application/json
+
+{
+    "id": "1",
+    "readings": [
+        {
+            "timestamp": "farts",
+            "count": null
+        }, 
+        {
+            "timestamp": "2021-09-29T18:09:15+01:00",
+            "count": 2 
+        }
+    ]
+}
+
+###
+GET http://localhost:3000/device-readings/1
+content-type: application/json
+
+###
+GET http://localhost:3000/device-readings/1/latest-timestamp
+content-type: application/json
+
+###
+GET http://localhost:3000/device-readings/2/cumulative-count
+content-type: application/json
