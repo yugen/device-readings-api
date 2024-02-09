@@ -5,8 +5,8 @@ content-type: application/json
     "id": "1",
     "readings": [
         {
-            "timestamp": "farts",
-            "count": null
+            "timestamp": "2021-09-29T19:08:15+01:00",
+            "count": 2
         }, 
         {
             "timestamp": "2021-09-29T18:09:15+01:00",

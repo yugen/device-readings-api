@@ -4,7 +4,7 @@ class DeviceReading
 
     attr_accessor :timestamp, :count
 
-    validates :timestamp, presence: true, format: { with: /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/ }
+    validates :timestamp, presence: true, format: { with: /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\+|\-)\d{2}:\d{2}/ }
     validates :count, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
     
     def initialize(timestamp:, count:)

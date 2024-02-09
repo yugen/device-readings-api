@@ -2,6 +2,15 @@
 
 This repo implements an API that stores device readings and can give information about the readings collected for a device.
 
+## Structure
+The application makes use of rails `MemoryCacheStore` to store readings for devices between requests.  This means the data will be lost each time the server is restarted.
+
+Readings for a device are modeled as a `DeviceLog` which maintains a list of the readings modeled as `DeviceReading` and caches the `latest_timestamp` and `cumulative` count.
+
+Retrieval and "persistence" of readings is encapsulated in the `DeviceLogRepository` to abstract interaction with `Rails.cache`.
+
+All of these classes can be found in `/domain`.
+
 ## Endpoints
 
 ### `[POST] /device-readings/`
@@ -23,6 +32,8 @@ Stores device readings for a device. Readings with timestamps already stored are
     ] 
 }
 ```
+`id` and `readings` are required.
+`readings` must be an array of objects where each has valid ISO-8061 `timestamp` and positive integer `count` attributes.
 
 #### Responses
 ##### 200 - Success
@@ -83,3 +94,7 @@ To run this API you'll need the following:
 3. Install ruby dependencies: `bundle install`
 4. Run the tests: `bundle exec rspec`
 4. Run the server: `rails server`
+
+
+## TODO:
+* Authentication & authorization - Some kind of authentication should be added to prevent unauthorized requests.

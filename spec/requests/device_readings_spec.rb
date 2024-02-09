@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "DeviceReadings", type: :request do
-  let(:reading1) { DeviceReading.new(timestamp: '2024-01-01T00:00:00', count: 1) }
-  let(:reading2) { DeviceReading.new(timestamp: '2024-01-01T00:01:00', count: 2) }
-  let(:reading3) { DeviceReading.new(timestamp: '2024-01-01T00:02:00', count: 3) }
+  let(:reading1) { DeviceReading.new(timestamp: '2024-01-01T00:00:00+01:00', count: 1) }
+  let(:reading2) { DeviceReading.new(timestamp: '2024-01-01T00:01:00+01:00', count: 2) }
+  let(:reading3) { DeviceReading.new(timestamp: '2024-01-01T00:02:00+01:00', count: 3) }
   let(:device_log_1) { DeviceLog.new(id: 'device-id-1', readings: [reading1, reading2, reading3]) }
   let(:repo) { DeviceLogRepository.new }
  
@@ -12,10 +12,10 @@ RSpec.describe "DeviceReadings", type: :request do
   describe "GET /store" do
     context 'when the device log does not exist for the id' do
       it 'creates a new device log and adds readings' do
-        post "/device-readings", params: { id: 'device-id-2', readings: [{ timestamp: '2024-01-01T00:00:00', count: 1 }] }
+        post "/device-readings", params: { id: 'device-id-2', readings: [{ timestamp: '2024-01-01T00:00:00+01:00', count: 1 }] }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to eq({ device_id: 'device-id-2', cumulative_count: 1, latest_timestamp: '2024-01-01T00:00:00' }.to_json)
+        expect(response.body).to eq({ device_id: 'device-id-2', cumulative_count: 1, latest_timestamp: '2024-01-01T00:00:00+01:00' }.to_json)
       end
     end
 
@@ -23,15 +23,15 @@ RSpec.describe "DeviceReadings", type: :request do
       before(:each) { repo.save('device-id-1', device_log_1)}
 
       it 'adds readings to the existing device log' do
-        post "/device-readings", params: { id: 'device-id-1', readings: [{ timestamp: '2024-01-01T00:03:00', count: 1 }] }
+        post "/device-readings", params: { id: 'device-id-1', readings: [{ timestamp: '2024-01-01T00:03:00+01:00', count: 1 }] }
 
         expect(response).to have_http_status(:ok)
-        expect(response.body).to eq({ device_id: 'device-id-1', cumulative_count: 7, latest_timestamp: '2024-01-01T00:03:00' }.to_json)
+        expect(response.body).to eq({ device_id: 'device-id-1', cumulative_count: 7, latest_timestamp: '2024-01-01T00:03:00+01:00' }.to_json)
       end
 
       context 'when a reading is invalid' do
         it 'returns a 422' do
-          post "/device-readings", params: { id: 'device-id-1', readings: [{ timestamp: '2024-01-01T00:03:00' }] }
+          post "/device-readings", params: { id: 'device-id-1', readings: [{ timestamp: '2024-01-01T00:03:00+01:00' }] }
           expect(response).to have_http_status(:unprocessable_entity)
         end
       end
@@ -47,7 +47,7 @@ RSpec.describe "DeviceReadings", type: :request do
       it "returns the latest timestamp" do
         get "/device-readings/device-id-1/latest-timestamp"
         expect(response).to have_http_status(:ok)
-        expect(response.body).to eq({ latest_timestamp: '2024-01-01T00:02:00' }.to_json)
+        expect(response.body).to eq({ latest_timestamp: '2024-01-01T00:02:00+01:00' }.to_json)
       end
     end
 

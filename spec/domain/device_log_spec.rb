@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "DeviceLog", type: :model do
-    let(:timestamp1) { '2023-01-01T00:00:00' }
-    let(:timestamp2) { '2023-01-01T00:01:00' }
-    let(:timestamp3) { '2023-01-01T00:02:00' }
+    let(:timestamp1) { '2023-01-01T00:00:00+00:00' }
+    let(:timestamp2) { '2023-01-01T00:01:00+00:00' }
+    let(:timestamp3) { '2023-01-01T00:02:00+00:00' }
     let(:reading1) { DeviceReading.new(timestamp: timestamp1, count: 1) }
     let(:reading2) { DeviceReading.new(timestamp: timestamp2, count: 3) }
     let(:reading3) { DeviceReading.new(timestamp: timestamp3, count: 5) }
