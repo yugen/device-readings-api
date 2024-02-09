@@ -15,7 +15,7 @@ RSpec.describe "DeviceReadings", type: :request do
         post "/device-readings", params: { id: 'device-id-2', readings: [{ timestamp: '2024-01-01T00:00:00', count: 1 }] }
 
         expect(response).to have_http_status(:ok)
-        # expect(response.body).to eq({ device_id: 'device-id-2', cumulative_count: 1, latest_timestamp: '2024-01-01T00:00:00' }.to_json)
+        expect(response.body).to eq({ device_id: 'device-id-2', cumulative_count: 1, latest_timestamp: '2024-01-01T00:00:00' }.to_json)
       end
     end
 
